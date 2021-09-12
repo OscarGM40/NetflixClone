@@ -1,0 +1,378 @@
+						REACT NETFLIX MOVIE APP TUTORIAL
+
+Source: https://www.youtube.com/watch?v=Nxw2j1-srVc&list=PLj-4DlPRT48k8TZ2ZjzbjnAq_wgIwsIab&index=1
+Repo: https://github.com/safak/youtube/tree/mern-deployment
+
+TIP:se recomienda usar un starter suyo.Para ello tendré que clonar una rama en concreto,para ello se usan las flags --single-branch y -b:
+>git clone --single-branch -b react-mini https://github.com/safak/youtube.git . <- la rama se llama react-mini y se clona aqui,en punto(no iba a punto ya por defecto?¿)
+
+AHORA  voy a fonts.google.com y me traigo la CDN de la fuente:
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+Despues instalaré SASS y Material 
+>npm add sass
+Y también material UI
+>npm add @material-ui/icons @material-ui/core
+
+Tip:justify-content:space-between mueve los elementos lo máximo posible a los lados.Es muy útil para navbars o siempre que quiera que dos elementos se separen a derecha y izquierda al máximo.Pongo su flex Container en flex y jcsb para los flex Items
+
+Fijate en que forma tan elegante de saber si se ha echo scroll(con ese acceso puedo cambiar navbars de tonalidad,ocultarlas con un fade,...)Es con el evento window.onscroll y con la propiedad window.pageYOffset.Enreact puedo usar un estado local 
+
+* En REACT:
+   const [isScrolled, setIsScrolled] = useState(false);
+    
+  //onscroll se dispará en cuanto se hace scroll
+  //fijate en el acceso tan tremendo que tengo al objeto window
+  window.onscroll = () => {
+     setIsScrolled(window.pageYOffset === 0 ? false : true);
+     return () => (window.onscroll = null)
+  }
+Solo hay que escuchar por el evento window.onscroll(ojo que es todo en minusculas en javascript el nombre del evento) y comprobar que window.pageYOffset es mayor que 0,ya que si es mayor se esta haciendo scroll.  
+
+NOTA: Node Js utiliza el motor Chrome V8 para compilar el Javascript a código máquina
+REPL son las siglas de Read Evaluate Print y Loop
+Todo lo que esta disponible en un entorno browser está dentro del objeto 'window'. 
+window.open("https://google.com") <- con el objeto window puedo abrir una ventana
+window.confirm("estas seguro?") <- abrir una ventana de confirmación
+
+Otro objeto muy importante es window.document(puedo obviar el window ya que lo pone por defecto js,pues todo cuelga de él)
+document es el actual documento,la actual página web
+
+De la misma manera que tengo a window en un browser tengo el objeto 'global' en nodejs.
+Si tipeo global veré que tiene como hijo a process.Es lo mismo que document para el browser,representa la aplicación.
+De igual forma que se agrega window y es lo mismo usar window.alert() que alert() en node es lo mismo usar global.process que simplemente process pues se agrega el objeto padre de todos por defecto.Puedo probar a tipear global.process en un entorno node.
+
+Fijate que para pasar un argumento al método handleClick de tipo string debo meterlo entre comillas!:
+
+        <ArrowForwardIosOutlined className="sliderArrow right"
+                onClick={ () => handleClick('right') }   <- no se te ocurra usar handleClick(right)
+                 />
+
+
+Para calcular la distancia que hay que sumar usé el método HTMLElement.getBoundingClientRect() donde el objeto HTMLElement puede ser cualquier elemento del DOM en el window.document sobre el que trabaje.
+ 
+fijate como consigue saber si se esta haciendo hover en un elemento con onMouseEnter y onMouseLeave y un state para despues devolver un componente condicionalmente(el trailer de cada pelicula):
+  const [isHovered, setIsHovered] = useState(false);
+  return (
+    <div
+      className="listItem"
+      style={{ left: isHovered && index * 225 - 50 + index * 2.5 }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      />
+      {isHovered && (
+
+Fijate los atributos de la etiqueta <video> como autoPlay,controls,progress, loop
+
+<video
+        className="video"
+        autoPlay
+        progress
+        controls
+        src="https://vod-progressive.akamaized.net/exp=1624452918~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2400%2F14%2F362003850%2F1486625955.mp4~hmac=d6f829e7bb83f1ee6a28047d00aa2c1083c8fe5036c8084a4adf1c3903085856/vimeo-prod-skyfire-std-us/01/2400/14/362003850/1486625955.mp4"
+      />
+
+Cuando quiera poner una imagen de background acuerdate de darle un efecto de linear gradient,como este que oscurece un poco desde abajo:
+
+   background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 1) 100%
+    ),
+    url("https://cdn.hipwallpaper.com/i/98/21/dUyCkp.jpg");
+* Queda perfecto.
+
+* Fijate que debo comprender como trabaja position:absolute,ya que entender esto es vital:
+
+  background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 1) 100%
+    ),
+    url("https://cdn.hipwallpaper.com/i/98/21/dUyCkp.jpg");
+  background-size: cover;
+  position: relative;
+  
+.container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+ * si quiero poner un div en posicion absoluta como es el caso de .container debo posicionar al padre en relativa.Ademas puedo mover al que esta en absoluta en este caso quiero que se meta detras de la navbar asi que le pongo en top0 y left0
+
+* Fijate como ha creado un cuadrado con un formulario y con una imagen detrás queda muy wapo.Lo pone todo en flex-direction column y justify-content: space-around para que deje margenes arriba y abajo.No confundir con justify-content: space-betweeen que lo manda a las esquinas sin padding contra las esquinas,a diferencia de space-around.Al ser en direction-column me refiero al eje Y en vez de al X.
+
+         border-radius: 5px;
+         background-color: var(--main-color);
+         display: flex;
+         flex-direction: column;
+         justify-content: space-around;
+      }
+
+				BACKEND
+
+Para encriptar la password vamos a usar la libreria crypto-js
+>npm i crypto-js
+Permite usar algoritmos como MD5(algo más seguro) o AES(un nuevo algoritmo de USA) aparte de los ya comunes SHA512 o SHA256.
+
+const CryptoJS = require('crypto-js');
+
+//Encriptar texto plano:
+let cipherText= CryptoJS.AES.encrypt('my text','secretKey').toString()
+//Desencriptar
+let bytes= CryptoJS.AES.decrypt(cipherText,'secretKey');
+let originalText= bytes.toString(CryptoJS.enc.Utf8);
+* Para encriptar un Object es diferente.Ver la documentación.
+
+Fijate que el token sólo lo creo yo en el login de un usuario.Es mucho más seguro que lo que hacia él de mandar en el body el userID.
+
+GET ALL USERS: fijate como sólo el Admin va a poder acceder a todos los usuarios y además va a poder o bien traer todos o traer los últimos 10!
+router.get("/getall", verify, async (req,res) => {
+ const query = req.query.new; <- puede ser la que quiera en este caso será new=true el disparador
+  if ( req.user.isAdmin){ <- si soy admin adelante
+  const users = query 
+  ? await User.find().sort({_id:-1}).limit(10) <- si hay query traigo 10 si no todos
+  : await User.find()
+ res.status(200).json({users:users});
+} else { res.status(403).json({error:"You are not allowed to perform this action"})}});
+
+* Es muy fácil.¿Y porque hace esto?Está claro que está relacionado con el dashboard!Fijate como puedo ordenar en orden reverso con sort({_id:-1})¿No debería ser por sort({createdAt:-1}) o +1,pero con createdAt?.
+
+* $project hace de pipeline,permite incluir o excluir campos. $month debe poder resolverse a un mes,luego debe recibir una Date(y $createdAt lo es),es decir que creamos un nuevo field month gracias a $project  que va a sacar el mes de creacion(como un Number:Enero es 1,Febrero es 2...)
+Despues lo agrupo y devuelvo los fields _id y total,siendo _id el mes(como Numero) y tl total la suma(uso de $sum:1)Parece que estoy separando por meses y haciendo el sumatorio de cada uno de todo el documento.Muy interesante.
+
+ try {
+      const data = await User.aggregate([
+      {
+         $project: 
+         {
+         month: { $month: "$createdAt" },
+         },
+      },{
+         $group: { _id: "$month" , total : { $sum: 1 } }
+      }]);
+
+Fijate como para actualizar el segundo argumento es { $set: req.body}.Acuerdate del $set,no va directamente el req.body.Realmente creo que es indiferente,ya que en la API con Iñaki pasamos el req.body como segundo argumento(confirmar esto).
+
+NOta: el método Model.aggregate(pipeline?:[]) recibe un único argumento que es un pipeline el cual es un arreglo de objetos:
+await Movie.aggregate([ {$match: { isSeries: true }}, {$sample: { size: 1 }} ]) <- puedo observar que es un arreglo de dos Object
+$match,$sample,$project,$month,..ver la doc.
+
+Fijate que cuando el error es cannot post /api/movies o asi parece que es la ruta que no existe,etc...
+
+IMPORTANTE: si declaro una ruta como router.get('/:id', ...) no puedo declarar más como router.get('/random',..) por ejemplo ya que tratará de castear el string 'random' a ObjectId y fallará.Si declaro una ruta como dinámica no puedo usar otra estática,pero si que puedo por ejemplo usar router.get('/find/:id',... y se acabó el problema.
+Ojo con las rutas estáticas y dinámicas que chocan.Recuerda los errores( cannot cast to Object Id y cannot post to /routeS/quenoexiste).
+
+Un <Link> de ReactRouterDOM funciona como un <anchor>,proporcionando estilos que debo quitar,seguramente.
+
+Es lo mismo devolver el componente que redirigir al usuario con <Redirect to="url" />
+
+* : <Redirect to="" /> o devolver <Register /> es lo mismo.Puedo elegir la que quiera
+  <Route exact path="/">
+         { user ? <Home /> : <Redirect to="/register" /> }
+  </Route>
+
+El elemento <Link to={{pathname:"/watch",movie:movie}} permite pasar como props lo que yo quiera,pero tengo que pasar un objeto a la propiedad to= que normalmente uso como string.Fijate que esto me abre posibilidades de pasar ya desde muy arriba una misma prop a todos,por ejemplo.
+Al usar su forma de objeto para su atributo 'to' tengo que usar la propiedad 'pathname' y como segunda propiedad del objeto la prop a pasar.
+Resumen <Link to={{pathname:"path":props:prop}} <- es igual que un routerLink=['',] de Angular.
+
+				HOOK USE LOCATION
+
+El hook useLocation(que viene de react-router-dom) lo voy a necesitar si uso <Link to={{pathname:ruta,prop:prop}} para pasar una prop por el enlace(ya que lo paso por los params?)
+
+import { useLocation } from 'react-router-dom';
+
+  const location = useLocation();
+  console.log(location)
+
+* Puedo ver que me imprime todo esto,con lo que simplemente tendré en location.movie(o el nombre que le dé al pasarla por el <Link>) todo el objeto 
+pathname: "/watch", movie: {…}, search: "", hash: "", key: "mzbolw"}hash: ""key: "mzbolw"movie: createdAt: "2021-08-13T18:57:56.976Z"desc: "test desc"img: "https://mokogordo"isSeries: falselimit: 16title: "Superman"updatedAt: "2021-08-13T18:57:56.976Z"year: "2000"_id: "6116c0b4c4eae95f80066d78"[[Prototype]]: Objectpathname: "/watch"search: ""[[Prototype]]: Object
+  
+Para cambiar el puerto de una aplicación React simplemente debo crear un .env con la variable PORT (no confundir con las REACT_APP_)
+REcuerda los hooks useLocation de react-router-dom y useSelector de redux!.
+
+						API CONTEXT
+
+Siempre que quiera usar la API Context debo usar un folder con tres archivos,uno es el Context o almacén,otro el reducer y otro para las acciones.Ejemplo(quiero crear un Contexto o almacén para gestionar la autenticación):
+
+1- Creo el folder authContext.
+2- En él creo los archivos AuthContext,AuthReducer y AuthActions.
+* Es convencion usar PascalCase en los archivos.
+
+			PASO 1 CREATE CONTEXT & USEREDUCER
+
+En el Context file debo crear un Contexto(con el método createContext(InitialState).Recuerda que la API Context es parte del core de React,no hay que instalar nada:
+
+import { createContext, useReducer } from "react"; 
+import { authReducer } from "./AuthReducer"; <- mi xxxReducer
+
+const INITIAL_STATE = {
+  user: JSON.parse(localStorage.getItem("lamaUser")) || null,
+  isFetching: false,
+  token: JSON.parse(localStorage.getItem("lamaToken")) || null,
+  logout:() => {},
+  error: {msg:'nought for now'},
+};
+
+*1 Creo un contexto con el estado inicial deseado.Lo tengo que exportar pues este es que va a pedir toda la app e irá cambiando,actualizandose.
+
+export const AuthContext = createContext(INITIAL_STATE);
+
+*2 Creo un componente funcional que recibirá props.children
+y que va a usar el useReducer(miReducer,estadoInicial).Fijate que necesita ir Capitalizado
+
+export const AuthContextProvider = ({ children }) => {
+  
+ const [ state, dispatch ] = useReducer(authReducer, INITIAL_STATE);
+
+  useEffect(() => {
+    localStorage.setItem("lamaUser", JSON.stringify(state.user));
+    localStorage.setItem("lamaToken", JSON.stringify(state.token));
+  }, [state.user,state.token]);
+
+3* Devuelvo el componente con el objeto value{} deseado
+  return (
+    <AuthContext.Provider
+      value={{
+        user: state.user,
+        isFetching: state.isFetching,
+        error: state.error,
+        token: state.token,
+        logout: state.logout,
+        dispatch,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+export default AuthContextProvider;
+
+4* Lo llamo por el nombre de esa función(por lo que exporte) en un punto alto:
+
+import { AuthContextProvider } from "./context/AuthContext";
+
+*4 Fijate que es el nombre de la función lo que llamo(pues es lo que exporté)
+
+ReactDOM.render(
+    <AuthContextProvider>
+      <App />
+    </AuthContextProvider>,
+* Mi App entera ya tiene visión sobre ese estado con las mejoras que esto implica en performance y re-renderizaciones innecesarias.
+
+Puedo ver perfectamente que este archivo tiene como dependencia el archivo xxxReducer de turno,pero para crear éste no tengo porque definir las acciones primero en el xxxActions(ni siquiera tengo porque crearlas)
+
+* En el xxxActions(las acciones son simples métodos que declaran el tipo y el payload,puedo intentar usar solo el xxxReducer de momento).Son para usarse cuando llame a dispatch.
+
+export const LoginStart = () => ({
+   type:"LOGIN_START"
+});
+
+export const LoginSucess = (user) => ({
+   type:"LOGIN_SUCCESS",
+   payload:user
+});
+
+export const LoginFailure = (error) => ({
+   type:"LOGIN_FAILURE",
+   payload: error
+});
+
+export const Follow = (userId) => ({
+   type:"FOLLOW",
+   payload: userId
+})
+* Siempre debo pasar por argumento de la accion el payload,es algo sencillo,realmente.
+
+En el xxxReducer es donde tendré la lógica,básicamente tomaré las acciones y actualizaré el state almacenado.El reducer es una función pura que toma como argumentos el state y las actions( era una función pura porque siempre devuelve lo mismo)
+
+export const xxxReducer = (state,actions) => { switch/case };
+
+* Ojo con todo esto con las capitalizaciones de la variable que retorna CreateContext y el componente que devuelve el Provider.Fijate que todo lo exporto y que puedo crear en el INITIAL_STATE lo que quiera.
+Por ejemplo,en esta aplicación usaré isFetching lo cual es interesante para pintar algo en la UI mientras se hace el fetch del backend.
+Puedo observar que es mucho más fácil de lo que recordaba.
+
+* Las acciones las puedo llamar en el dispatch asi:
+
+import { loginFailure, loginStart, loginSuccess } from './AuthActions';
+
+// las userCredentials son el Object    {email,password}
+//necesito el dispatch porque lo voy a usar tres veces aqui,si no lo paso por argumento dificil poder usarlo.Esto implica que al llamar a esta apiCall tengo que llamar a const {dispatch}=useContext(AuthProvider) y pasarlo a loginCall.Es fácil,realmente,solo estoy refactorizando una funcion para que el login sea más sencillo.
+
+export const loginCall = async (userCredentials,dispatch) => {
+   dispatch(loginStart());
+
+   try {
+      const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/login`,userCredentials);
+      dispatch(loginSuccess(res.data));
+   } catch (error) {
+      dispatch(loginFailure())
+   }
+}
+
+* Recuerda que esto es solo sacar un metodo afuera.
+Para la lógica de los comments voy a necesitar $in y $nin además de $push y $pull.Para los likes de cualquier Model:
+
+await Model.findByIdAndUpdate(req.params.ModelId,{ $push: { likes: req.user.id } }); <- esto empuja al campo de tipo array 'likes' el id del usuario.
+Fijate que me falta comprobar que no lo tuviera ya(pues no puedo dar más de un like).
+* NOTA: él usa todo el rato el método exec(error,response) en vez de try/catchss)
+MOdel.findXXX().exec( (err,result) => {
+if(err) return res.xxx;
+return res.status(200).xxx
+ })
+Es como un then()+catch() juntos.Lo necesita porque está usando código síncrono.Si uso asincrono no necesito,si uso sincrono o bien then/catch o exec().
+
+					AÑADIR FIREBASE A UNA APP DE REACT
+
+Para poder usar Firebase tengo que instalarlo con (npm i firebase).En este caso lo haré en el admin project.En esta app usaremos su Storage(no confundir con FirestoreStorage,parece que son 10GB).Para configurar Firebase creo colgando de 'src' el archivo firebase.js:
+NOTA: cambiar las reglas ya que pide que se esté autenticado por defecto:
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read, write: if request.auth != null; cambiar por allow read,write: true;
+    }
+  }
+}
+TEngo que enlazar mi frontend(en descripcion del proyecto le enlazo una app Web,cuando lo haga me copio el código y lo pego en ese archivo recien creado):
+
+import { firebase} from 'firebase';
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyBkw7Vpp9hEYghar7zjH3_bN-8VB845D9U",
+    authDomain: "socialnetwork-4c57b.firebaseapp.com",
+    projectId: "socialnetwork-4c57b",
+    storageBucket: "socialnetwork-4c57b.appspot.com",
+    messagingSenderId: "79013184837",
+    appId: "1:79013184837:web:c80c04fdec76f5cecc6a2c",
+    measurementId: "G-865FLWFL5K"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  // TODO decidir si dejo las analytics
+  firebase.analytics();
+  // dado que voy a usar su Storage lo inicio y exporto
+  const storage = firebase.storage();
+  export default storage;
+
+* Puedo observar que es facilisimo usar Firebase.Mejor traer la key desde el .env(requerirá instalar dotenv).Seguir indagando como puedo subir mas de un archivo a la vez.Seguir indagando como puedo usar su autenticación de Firebase.
+
+Fijate que cuando suba algo a Firebase me devolverá un snapshot ,que es una callback con la data.Con ella puedo hacer lo que quiera,en este caso 
+
+Fijate como ha manejado el recoger los datos de un select multiple(hay que recoger los values de cada <option>):
+
+  const handleSelect = (event) => {
+    event.preventDefault();
+    let values = Array.from(event.target.selectedOptions, (option) => option.value)
+    setList( { ...list, [event.target.name]: values })
+  }
+* Fijate como Array.from(value,cb) me ha permitido crear un array desde el retorno de la callback de la funcion.
+
+

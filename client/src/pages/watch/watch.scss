@@ -1,0 +1,31 @@
+.watch {
+   width: 100vw;
+   height: 100vh;
+
+   
+   .backArrow {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-evenly;
+      gap: 3px;
+      position: absolute;
+      top: 00px;
+      left: 10px;
+      color:white;
+      cursor: pointer;
+      z-index: 2;
+      
+   }
+
+   .backText {
+      font-size: 16px;
+      color: black;
+      }
+
+   .video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+   }
+   
+}
