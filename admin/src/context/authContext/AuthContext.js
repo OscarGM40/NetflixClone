@@ -1,4 +1,4 @@
-import { createContext, useEffect, useReducer } from "react";
+import { createContext, useReducer } from "react";
 import { authReducer } from "./AuthReducer";
 
 const INITIAL_STATE = {
@@ -15,11 +15,11 @@ export const AuthContextProvider = ( {children} ) => {
 
    const [ state, dispatch ] = useReducer( authReducer,INITIAL_STATE );
 
-   useEffect( () => {
+  /*  useEffect( () => {
       localStorage.setItem('netflixCloneUser',JSON.stringify(state.user));
       localStorage.setItem('netflixCloneToken',JSON.stringify(state.token));
 
-   },[state])   
+   },[state])    */
    
 return (
    // NOTA si lo hubiera llamado AnyContext tendría que usar AnyContext.Provider

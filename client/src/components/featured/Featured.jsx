@@ -16,9 +16,9 @@ const Featured = ( { type,setGenre } ) => {
          const res = await axios.get(`${process.env.REACT_APP_API_URL}/movies/random?type=${type}`,{
             headers:{'authorization':`Bearer ${token}`}
          }) 
-         setContent(res.data[0]);
+         setContent(res?.data[0]);
        } catch (error) {
-         console.log(error.response.data) 
+         console.log(error?.response?.data) 
        }
     }
     getRandomContent();
@@ -51,15 +51,15 @@ const Featured = ( { type,setGenre } ) => {
          )}
          
          <img 
-           src={content.img}
+           src={content?.img}
            alt="" />
 
          <div className="info">
             <img 
             className="imgB"
-            src={content.imgTitle} alt="" />
+            src={content?.imgTitle} alt="" />
 
-            <span className="desc">{content.desc}</span>
+            <span className="desc">{content?.desc}</span>
 
             <div className="buttons">
                <button className="play">

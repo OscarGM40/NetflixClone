@@ -31,7 +31,7 @@ const Home = ( { type } ) => {
       getRandomList();
    }, [type,genre,token])
   
-   console.log(genre)
+   // console.log(genre)
    
    return (
       <div className="home">
