@@ -16,7 +16,7 @@ Y también material UI
 
 Tip:justify-content:space-between mueve los elementos lo máximo posible a los lados.Es muy útil para navbars o siempre que quiera que dos elementos se separen a derecha y izquierda al máximo.Pongo su flex Container en flex y jcsb para los flex Items
 
-Fijate en que forma tan elegante de saber si se ha echo scroll(con ese acceso puedo cambiar navbars de tonalidad,ocultarlas con un fade,...)Es con el evento window.onscroll y con la propiedad window.pageYOffset.Enreact puedo usar un estado local 
+Fijate en que forma tan elegante de saber si se ha echo scroll(con ese acceso puedo cambiar navbars de tonalidad,ocultarlas con un fade,...)Es con el evento window.onscroll y con la propiedad window.pageYOffset.En React puedo usar un estado local 
 
 * En REACT:
    const [isScrolled, setIsScrolled] = useState(false);
@@ -40,18 +40,19 @@ document es el actual documento,la actual página web
 
 De la misma manera que tengo a window en un browser tengo el objeto 'global' en nodejs.
 Si tipeo global veré que tiene como hijo a process.Es lo mismo que document para el browser,representa la aplicación.
-De igual forma que se agrega window y es lo mismo usar window.alert() que alert() en node es lo mismo usar global.process que simplemente process pues se agrega el objeto padre de todos por defecto.Puedo probar a tipear global.process en un entorno node.
+Puedo probar a tipear global.process en un entorno node.
 
-Fijate que para pasar un argumento al método handleClick de tipo string debo meterlo entre comillas!:
+Puedo pasar un argumento a un método(handleClick en este ejemplo) de tipo string.Recuerda que pasar un argumento me obliga a usar una funcion flecha:
 
-        <ArrowForwardIosOutlined className="sliderArrow right"
-                onClick={ () => handleClick('right') }   <- no se te ocurra usar handleClick(right)
-                 />
-
+  <ArrowForwardIosOutlined 
+    className="sliderArrow right"
+    onClick={ () => handleClick('right') }   <- argumento random
+  />
 
 Para calcular la distancia que hay que sumar usé el método HTMLElement.getBoundingClientRect() donde el objeto HTMLElement puede ser cualquier elemento del DOM en el window.document sobre el que trabaje.
  
-fijate como consigue saber si se esta haciendo hover en un elemento con onMouseEnter y onMouseLeave y un state para despues devolver un componente condicionalmente(el trailer de cada pelicula):
+Fijate como consigue saber si se esta haciendo hover en un elemento con onMouseEnter y onMouseLeave y un state para despues devolver un componente condicionalmente(el trailer de cada pelicula):
+  
   const [isHovered, setIsHovered] = useState(false);
   return (
     <div
@@ -66,16 +67,16 @@ fijate como consigue saber si se esta haciendo hover en un elemento con onMouseE
 Fijate los atributos de la etiqueta <video> como autoPlay,controls,progress, loop
 
 <video
-        className="video"
-        autoPlay
-        progress
-        controls
-        src="https://vod-progressive.akamaized.net/exp=1624452918~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2400%2F14%2F362003850%2F1486625955.mp4~hmac=d6f829e7bb83f1ee6a28047d00aa2c1083c8fe5036c8084a4adf1c3903085856/vimeo-prod-skyfire-std-us/01/2400/14/362003850/1486625955.mp4"
-      />
+  className="video"
+  autoPlay
+  progress
+  controls
+  src="https://vod-progressive.akamaized.net/1624452918~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2400%2F14%2F362003850%2F1486625955.hmac=d6f829e7bb83f1ee6a28047d00aa2c1083c8fe5036c8084a4adf1c3903085856/o-prod-skyfire-std-us/01/2400/14/362003850/1486625955.mp4"
+/>
 
 Cuando quiera poner una imagen de background acuerdate de darle un efecto de linear gradient,como este que oscurece un poco desde abajo:
 
-   background: linear-gradient(
+background: linear-gradient(
       to bottom,
       rgba(0, 0, 0, 0) 0%,
       rgba(0, 0, 0, 1) 100%
@@ -83,9 +84,9 @@ Cuando quiera poner una imagen de background acuerdate de darle un efecto de lin
     url("https://cdn.hipwallpaper.com/i/98/21/dUyCkp.jpg");
 * Queda perfecto.
 
-* Fijate que debo comprender como trabaja position:absolute,ya que entender esto es vital:
+* Fijate que debo comprender como trabaja position:absolute, ya que entender esto es vital:
 
-  background: linear-gradient(
+background: linear-gradient(
       to bottom,
       rgba(0, 0, 0, 0) 0%,
       rgba(0, 0, 0, 1) 100%
@@ -105,7 +106,8 @@ Cuando quiera poner una imagen de background acuerdate de darle un efecto de lin
     align-items: center;
     justify-content: center;
     color: white;
- * si quiero poner un div en posicion absoluta como es el caso de .container debo posicionar al padre en relativa.Ademas puedo mover al que esta en absoluta en este caso quiero que se meta detras de la navbar asi que le pongo en top0 y left0
+ * si quiero poner un div en posicion absoluta como es el caso de .container debo posicionar al padre en relativa(la imagen de arriba).
+ Ademas puedo mover al que esta en absoluta donde quiera.en este caso quiero que se meta detras de la imagen asi que le pongo en top0 y left0 y con width y height del 100%.
 
 * Fijate como ha creado un cuadrado con un formulario y con una imagen detrás queda muy wapo.Lo pone todo en flex-direction column y justify-content: space-around para que deje margenes arriba y abajo.No confundir con justify-content: space-betweeen que lo manda a las esquinas sin padding contra las esquinas,a diferencia de space-around.Al ser en direction-column me refiero al eje Y en vez de al X.
 

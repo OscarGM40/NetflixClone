@@ -17,7 +17,6 @@ const Watch = () => {
       </div>
       </Link>
       <video
-        // src="https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4"
         src={location.movie?.video}
         className="video"
         type="video/mp4"
