@@ -1,16 +1,31 @@
 export const loginStart = () => ({
    type:"LOGIN_START",
 });
-// hay que decir que es lo que devuelve,siempre lo tomará como argumento la Action
+
 export const loginSuccess = (user) => ({
    type:"LOGIN_SUCCESS",
    payload: user,
 });
-// no mandamos el error como payload por que es una app simple de muestra
-export const loginFailure = () => ({
+
+export const loginFailure = (error) => ({
    type:"LOGIN_FAILURE",
+   payload:error,
 });
-// no mandamos el error como payload por que es una app simple de muestra
+
+export const registerStart = () => ({
+   type:"REGISTER_START",
+});
+
+export const registerSuccess = (user) => ({
+   type:"REGISTER_SUCCESS",
+   payload: user,
+});
+
+export const registerFailure = (error) => ({
+   type:"LOGIN_FAILURE",
+   payload:error,
+});
+  
 export const logout = () => ({
    type:"LOGOUT",
 });

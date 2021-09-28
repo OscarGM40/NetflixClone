@@ -1,81 +1,121 @@
 import { useContext, useState } from "react";
 import { loginCall } from "../../context/authContext/AuthApiCalls";
 import { AuthContext } from "../../context/authContext/AuthContext";
+import styled from "styled-components";
+import { mediumScreens, mobilelandscape, mobileportrait, tablet } from "../../helpers/mediaQueries";
 
+
+const Container = styled.div`
+  width:100vw;
+  height: 100vh;
+  background: linear-gradient(
+    rgba(255, 255, 255,0.5),
+    rgba(255, 255, 255,0.3)
+  ),url("https://images.pexels.com/photos/4157187/pexels-photo-4157187.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940") center;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Wrapper = styled.div`
+  width:40%;
+  padding: 20px;
+  background-color:  #ffffff22;
+  border-radius: 15px;
+  ${ mediumScreens( { width:"50%"} ) };
+  ${ tablet( { width:"65%"} ) };
+  ${ mobilelandscape( { width:"75%"} ) };
+  ${ mobileportrait( { width:"80%"} ) };
+`;
+
+const Title = styled.h1`
+  font-size: 30px;
+  font-weight: 300;
+  margin-bottom: 10px;
+`;
+
+const Form = styled.form`
+  display: flex;
+  /* flex-wrap: wrap; */
+  flex-direction: column;
+`;
+
+const Input = styled.input`
+  flex:1;
+  min-width:40%;
+  margin: 20px 0px;
+  padding:15px;
+  font-size: 16px;
+  border-radius: 15px;
+  outline:none;
+`
+
+const Button = styled.button`
+  width: 50%;
+  border: none;
+  padding: 15px 20px;
+  background-color: teal;
+  color: white;
+  cursor: pointer;
+  margin: 10px 0px;
+  font-size: 14px;
+  font-weight: 300;
+  border-radius: 5px;
+  transition: all 0.4s linear;
+
+  &:hover {
+    background-color: #014747;
+  }
+`;
+
+const Link = styled.a`
+  margin: 5px 0px;  
+  font-size: 12px;
+  text-decoration: underline;
+  cursor: pointer;
+`;
+
+/* Begin of the component */
 const Login = () => {
+
   const { isFetching, dispatch } = useContext(AuthContext);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [ email, setEmail ] = useState("");
+  const [ password, setPassword ] = useState("");
 
   const handleLogin = (e) => {
     e.preventDefault();
-    //recuerda que el usó apiCalls
     loginCall({ email, password }, dispatch);
   };
 
   return (
-    // TODO puedo usar mdb-login,sea lo que sea cambialo
     <>
-      <div className="container vh-100">
-        <div className="row w-100 h-100 d-flex justify-content-center align-items-center">
-          <div className="col-6">
-            <form className="w-100">
-              <div className="form-outline border rounded-3 mb-4">
-                <input
+      <Container>
+        <Wrapper>
+            <Form>
+              <Title>LOGIN AS ADMIN</Title>
+                <Input
+                  placeholder="enter email"
                   type="email"
-                  id="form1Example1"
-                  className="form-control"
                   value={email}
                   onChange={(ev) => setEmail(ev.target.value)}
                   />
-                <label className="form-label" htmlFor="form1Example1">
-                  Email address
-                </label>
-              </div>
-
-              <div className="form-outline border rounded-3 mb-4">
-                <input
+                <Input
                   type="password"
-                  id="form1Example2"
-                  className="form-control"
                   value={password}
                   onChange={(ev) => setPassword(ev.target.value)}
                 />
-                <label className="form-label" htmlFor="form1Example2">
-                  Password
-                </label>
-              </div>
-
-              <div className="row mb-4">
-                <div className="col d-flex justify-content-center">
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      id="form1Example3"
-                    />
-                    <label className="form-check-label" htmlFor="form1Example3">
-                      Remember me
-                    </label>
-                  </div>
-                </div>
-
-                <div className="col">
-                  <a href="#!">Forgot password?</a>
-                </div>
-              </div>
-
-              <button type="submit" 
-                className="btn btn-primary btn-block"
+              <Button  
                 onClick={handleLogin}
                 disabled={isFetching}
                 >
-                Sign in
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
+              ACCESS (Only Admins)
+              </Button>
+              <Link>DO NOT YOU REMEMBER THE PASSWORD?</Link>
+              <Link target="_blank" href={`${process.env.REACT_APP_CLIENT_URL}/register`}>CREATE A NEW ACCOUNT</Link>
+            </Form>
+        </Wrapper>
+      </Container>
     </>
   );
 };

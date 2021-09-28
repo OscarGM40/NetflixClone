@@ -27,6 +27,7 @@ function App() {
   return (
     <Router>
       <Switch>
+        {!user && <Login />}
         <Route path="/login">{user ? <Redirect to="/" /> : <Login />}</Route>
         {error && <h1>No admin??</h1>}
         {user && (
