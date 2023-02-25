@@ -1,0 +1,71 @@
+      NETFLIX CLONE BY ILW YENNEFER
+
+Source: https://www.youtube.com/watch?v=cwqNAkwhKqw&ab_channel=ILWYennefer
+Repo: https://github.com/lukef7fywmrp/netflix-redesign
+
+Empezamos creando un proyecto con next y tailwind con su starter:
+npx create-next-app --example with-tailwindcss <app-name>
+Next.js has in-built routing system directory(everything inside the pages directory actually becomes a page,with its name as route )
+
+Recuerda que tailwind va a crear un file con sus tres directivas y en él puedo targetear al html ya establecido o crear mis propias clases:
+** En el global.css:
+@tailwind base; <- diria que es como un import(investigar)
+@tailwind components;
+@tailwind utilities;
+
+/* capa que targetea al html ya establecido,es decir las tags como html, body, h1,ul,etc  */
+@layer base {
+  body {
+    @apply bg-[#141414] text-white;
+  }
+}
+
+/* capa para crear custom classNames para mis componentes */
+@layer components {
+  .headerLink {
+    @apply cursor-pointer text-sm font-light text-[#e5e5e5] transition duration-[.4s] hover:text-[#b3b3b3];
+  }
+}
+
+En cuanto a los iconos de nuevo vamos a usar dos librerias:
+ 1- la libreria heroicons(que es un poco más minimalista que react-icons,es decir,tiene menos iconos a nuestra disposición):
+
+>yarn add @heroicons/react(fijate que en la v2 en TS me pedirá los tipos,puedo hacer downgrade a la major 1 para evitarlo)
+
+ 2- la libreria react-icons:esta libreria en realidad es un wrapper de varias librerias de iconos,englobando una gran cantidad de ellos
+ 
+ >yarn add react-icons
+
+ TIP: para crear gradientes en tailwind tengo que usar tres propiedades:
+ 1- hacia que direccion -> bg-gradient-to-b (to bottom) o bg-gradient-to-l(to left)
+ 2- desde que color(from- + color) -> from-gray-900/10
+ 3- hasta que color(to- + color) -> to-[#141414]
+ En conjunto quedaria algo asi: <div className="bg-gradient-to-b from-gray-900/10 to-[#010511]" (fijate que el from y el to son bastante negros ambos)
+
+ Recuerda que vamos a integrar la API de TheMovieDataBase(TMDB) con lo que hay que registrarse y sacar una key(la tengo en settings/api,es la v3.Ojo,que es la privada.
+Despues en el home vamos a pedir en paralelo varias colecciones con Promise.all usando SSR(archivo pages/index.tsx).Perfect
+
+ TIP: recuerda que las interfaces se pueden extender mientras que los types no(aunque tendria acceso a los built-in types).
+ 
+ NOTA: Tailwind no tiene por defecto nada para trabajar con text-shadows,pero se pueden instalar paquetes adicionales(ojo que es un plugin) para acceder a estar funcionalidad(usaremos la libreria tailwindcss-text-shadow).Fijate que nos vale con que sea una dev dependency:
+
+ >yarn add tailwindcss-textshadow -D
+
+Y dado que es un plugin tenemos que decirselo a tailwind en el tailwind.config.js:
+  plugins: [
+    require('tailwindcss-textshadow'), +...
+  ],
+
+NOTA: vamos a ocultar todos los scrolls tmb mediante la libreria(otro plugin) tailwind-scrollbar-hide:
+yarn add tailwind-scrollbar-hide <- de nuevo declarar como plugin
+
+IMPORTANTE: de nuevo esto lo que hace es darme acceso a la utility-class llamada scrollbar-hide(de igual manera que antes añadi las clases text-shadow-XXX).Incluso lo veré en el IDE
+
+TERCER PLUGIN: y de nuevo tenemos un scroll lateral ultrafeo,vamos a usar otro plugin/libreria llamado 'tailwind-scrollbar'.No confundir con la libreria anterior.Éste es una dev-dependency(no entiendo porqué):
+>yarn add -D tailwind-scrollbar 
+Esta vez se exponen varias clases(ver documentación de la lib).Usaremos la scrollbar-thin(hay dos anchos,el normal sigue siendo feo) y además será rounded(fijate que hubo que configurar más cosas para esto y fijate en los important)
+
+@layer base {
+  body {
+    @apply bg-[#141414] text-white !scrollbar-thin !scrollbar-track-transparent !scrollbar-thumb-red-600 scrollbar-thumb-rounded-full scrollbar-track-rounded-full; 
+  }
