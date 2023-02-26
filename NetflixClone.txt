@@ -69,3 +69,41 @@ Esta vez se exponen varias clases(ver documentación de la lib).Usaremos la scro
   body {
     @apply bg-[#141414] text-white !scrollbar-thin !scrollbar-track-transparent !scrollbar-thumb-red-600 scrollbar-thumb-rounded-full scrollbar-track-rounded-full; 
   }
+
+  Debe saber cuando una etiqueta es de bloque,cuando inline y cuando inline-block y qué significa esto para su altura y anchura
+
+  2h04: fijate que la experiencia de usuario incrementa al poner las flechas de navegación en el carousel
+  2h10m: memoriza como puedo sacar el scroll horizontal a un carousel con una simple ref,las propiedades scrollLeft y clientWidth(está es el ancho de la ventana) y el método scrollTo({}):
+
+  1- creo una ref al div que será el contenedor de las imagenes:
+  const rowRef = useRef<HTMLDivElement>(null);
+  2- creo un handler para los chevron del div según la direction:
+  const handleClick = (direction:string) => {
+    if(rowRef.current){ <- realmente ya habrá asignado la ref,pero es una guarda
+      const {scrollLeft,clientWidth} = rowRef.current; 
+
+      const scrollTo = direction === 'left' ? scrollLeft - clientWidth : scrollLeft + clientWidth; <- si es para la izda se resta(por ejemplo podria ser 3000px - 1024px,determinando que queremos ir hasta los 2000px en el método scrollTo)
+   
+     rowRef.current.scrollTo({left:scrollTo,behavior:'smooth'});
+     * TIPS: no confundir el método div.scrollTo con la variable scrollTo.Si estoy en un ancho de 1024px la primera vez será 0 + 1024px determinando que quiero ir 1024px a la derecha(si hiciera click en la derecha,etc)
+    }
+  }
+  Puebo observar que no necesito libreria alguna para crear un caroulsel fácilmente
+  IMPORTANTE: podia haber usado rowRef.current.scrollLeft y rowRef.current.clientWidth pero mejor desestructurar el objeto rowRef.current(el div en este caso)
+  Diria que esto me valdrá para cualquier elemento en bloque.
+  Fijate que la forma de Lama es con CSS en vez de Javascript y permite volver al primer slide de forma natural,algo que puedo querer integrar también
+
+  Tailwind me permite fijar de forma global varias features(como el backgroungImage).Esto siempre va en el tailwind.config.js en la propiedad theme y en extend para que extienda y lo aplique a todo el theme:
+
+    theme: {
+    extend: {
+/*       textShadow: {
+        md: "2px 2px 4px rgb(0 0 0 / 45%);",
+      }, */
+      backgroundImage: {
+        "gradient-to-b":
+          "linear-gradient(to bottom,rgba(20,20,20,0) 0,rgba(20,20,20,.15) 15%,rgba(20,20,20,.35) 29%,rgba(20,20,20,.58) 44%,#141414 68%,#141414 100%);",
+      },
+    },
+  },
+  Si te fijas todo lo que se ha hecho lo sabes hacer,a excepción del scroll por JS en el carousel.Fijate en el poder del SSR y de Tailwind,que combinados son un pepino.
