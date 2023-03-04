@@ -1,0 +1,74 @@
+					  RESUMEN GIT & GITHUB
+
+Url a Git: https://git-scm.com/
+Url a GitHub: https://github.com/
+
+Git es un sistema de control de versiones de código.Es open-source.No confundir con GitHub que es un sistema de almacenamiento de repositorios en la nube.El que da seguimiento al código es Git.
+
+IMPORTANTE: git y github se manejan por comandos por consola,normalmente.Este tipo de comandos suelen aceptar muchas flags(una flag es --short o -m).Es tonteria memorizar las flags,son demasiadas.
+
+	CONFIGURAR GIT
+
+Git va a nivel de sistema operativo.Tendrás que descargarlo de la url en cada sistema operativo(Windows,Linux o Mac) en el que quieras hacer un repositorio.
+Una vez instalado el programa tienes que configurar un username y un email(pueden ser ficticios):
+
+git config --global user.name "Your nickname"
+git config --global user.email "Your email"
+* Puedes sobreescribir las veces que necesites estos parámetros.Para poder verlos:
+git config --global user.name -> retornará "Your nickname" 
+git config --global user.email -> retornará "Your email"
+* Este paso es obligatorio para poder hacer un repositorio 
+
+     REPOSITORIOS(git init)
+
+En el momento en que das el control a Git de una carpeta por convención se llama repositorio(un repositorio es pues una simple carpeta a la que estas dando seguimiento).El comando para empezar un repositorio es 'git init'.
+* Puedes ver el estado de un repo con 'git status' y ver tmb si realmente hay un repo en esa carpeta
+
+   STAGING AREA (git add)
+
+Una vez creado un repositorio de git sobre una carpeta(estructura de ficheros) puedes crear un commit,y representará como está esa carpeta en ese momento.Antes de hacer un commit hay que añadir los archivos al 'staging area'.
+Esto es un simple paso para poder asegurarte que realmente estas seguro del commit.
+Puedes remover/retirar cualquier cosa del staging area antes del commit.Para agregar algo al staging area inicial se usa UNO DE ESTOS):
+
+git add . (este comando no da salida de lo que hace.Agrega todo)
+git add -vA (lo mismo que git add . pero con salida por consola)
+git add file3.txt(añade solo ese file.No se suele usar)
+
+* Si necesitaras borrar del staging area es con git rm --cached file:
+git rm --cached file3.txt (elimina ese file del staging area)
+
+Mas info aqui: https://linuxhint.com/remove-file-from-the-staging-area-in-git/
+
+	CREAR UN COMMIT
+
+Al crear un commit Git guardará(en una carpeta oculta llamada .git en la raiz del repo) un commit del estado de ese repositorio en ese momento, pudiendo volver a ese commit si fuera necesario.
+
+git commit -m "nombre identificativo" (para crear un commit de lo que tengas en el staging area)
+
+Hay otras flags como --amend pero no son importantes ahora.
+
+IMPORTANTE: GIT llega hasta aqui.Es decir,no sale del disco duro del sistema operativo sobre el que estes.Esto obviamente no vale para mucho,ya que si pierdes el ordenador pierdes todo.Para solucionar esto se suben los repositorios a la nube mediante herramientas como GitHub o GitLab o BitBucket.GitHub es la más recomendable.
+
+		GITHUB
+
+Lo primero será registrarte con un usuario cualquiera.Una vez echo esto,puedes crear un repositorio en la nube.Esto realmente no representa nada mientras no le enlaces un repositorio de Git.
+
+Para enlazar un repositorio es con 'git remote add + la url de repo' + la extension '.git'.Por ejemplo:
+
+git remote add origin https://github.com/usuario1/GitCoursesAndNotes.git <- fijate en la extensión .git
+
+IMPORTANTE: puedes ver si tienes un remoto ya añadido con git remote -v.Ejemplo:
+
+git remote -v:
+origin  git@github.com:OscarGM40/teslaCloneReduxFirebaseAuth.git (fetch)           
+origin  git@github.com:OscarGM40/teslaCloneReduxFirebaseAuth.git (push)
+
+Si no hubiera salido nada por consola no tiene un remoto enlazado aún.El remoto es uno sólo,es el mismo,pero puedes fijar uno para las ordenes de fetch y otro para las ordenes de push(fetch es subir codigo,push es bajar).Esto no se suele dar,siempre subes y bajas datos del mismo.
+
+Una vez tengas enlazado el repositorio de Git con el de GitHub ya puedes hacer push.Sin embargo la primera vez tienes que sincronizar las ramas con la flag -u(o --set-upstream,es la misma flag).
+
+Primer push:
+git push -u origin master <- master si la rama local se llama master.
+
+Los siguientes push no necesitas decir que la master local va a subir a origin/master(pues ya lo sabe) y solo necesitas hacer 'git push'.
+NOTA: un push siempre va despues de hacer un commit.

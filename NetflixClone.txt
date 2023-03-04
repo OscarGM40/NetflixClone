@@ -107,3 +107,80 @@ Esta vez se exponen varias clases(ver documentación de la lib).Usaremos la scro
     },
   },
   Si te fijas todo lo que se ha hecho lo sabes hacer,a excepción del scroll por JS en el carousel.Fijate en el poder del SSR y de Tailwind,que combinados son un pepino.
+
+      DAY TWO
+
+Lo primero vamos a crear el proyecto de Firebase para la DB(entiendo que la necesitamos para los usuarios y para la lista de movies favoritas).Una vez creado instalamos el SDK de Firebase:
+>yarn add firebase
+
+Despues creamos el file de configuracion 'firebase.ts' en la raiz del proyecto:
+
+EY tiene una pinta terrible y encima es full-stack
+atSistemas es con React
+viewNext es con React
+UST LATAM es full-stack parece malo
+ZRG(PromoFarma) es con React
+Liferay es con React
+Ucademy es full-stack,parece interesante
+
+Fijate que el hook useAuth podriamos extrapolarlo a otros backends,en este caso usamos Firebase pero podria valer para Node + Mongo,etc
+Desde luego para esta casuistica/tipo de aplicación el hook le viene al pelo.
+
+Modal para ver una Movie(usando recoil).Fijate que si bien cualquier app en producción va a ser redux,para apps tan sencillas como está recoil le viene muy bien:
+>yarn add recoil
+También vamos a usar una modal de Material UI,asi que en este punto instalamos recoil y material v5:
+>yarn add @mui/material @emotion/react @emotion/styled
+
+NOTA: recoil necesita un HOC,normalmente en el punto más alto de la app.Ya nos lo proporcionan, es el <RecoilRoot></RecoilRoot>.Nuestro mejor punto es el _app:
+
+function MyApp({ Component, pageProps }: AppProps) {
+  return (
+    <AuthProvider>
+      <RecoilRoot>
+        <Component {...pageProps} />
+      </RecoilRoot>
+    </AuthProvider>
+  );
+}
+
+Un atom representa una pieza de estado.Los atoms pueden ser leidos y cambiados desde cualquier componente.Cualquier componente que lea un atom es implicitamente suscrito a ese atom/state,asi que cualquier cambio en ese valor re-renderizara ese componente/componentes.Se crean con la funcion atom:
+
+const textState= atom({
+  key:'textState',
+  default:''
+})
+
+Asi pues creamos dos simples slices para guardar una movie y el estado de la modal en esta app tan sencilla:
+* En atoms/modal.ts(fijate que habria que haber creado incluso dos files)
+
+export const modalState = atom<boolean>({
+  key: "modalState",
+  default: false,
+});
+
+export const movieState = atom<Movie | DocumentData | null>({
+  key: "movieState",
+  default: null,
+});
+
+Para acceder a los getters de estos states uso useRecoilValue:
+ const showModal = useRecoilValue(modalState);
+
+Para acceder a los getters y setters uso useRecoilState:
+ const [showModal, setShowModal] = useRecoilState(modalState);
+
+En el JSX vemos solo la modal si el boolean es true
+ {showModal &&  <Modal /> }
+
+ 1h33: para la reproducción del video vamos a usar la libreria react-player,que es muy usada.La libreria esta aqui(yarn add react-player):
+ https://www.npmjs.com/package/react-player
+
+ Para usarla simplemente usamos su Wrapper Cmp.Amazing
+
+import React from 'react'
+import ReactPlayer from 'react-player'
+
+// Render a YouTube video player
+<ReactPlayer url='https://www.youtube.com/watch?v=ysz5S6PUM-U' />
+
+1h57m:

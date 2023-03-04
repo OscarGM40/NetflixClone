@@ -11,6 +11,7 @@ const Row = ({ movies, title }: Props) => {
   // useRef is a quite performance react Hook when is compared to useState.It needs the reference to the stuff referenced
   const rowRef = useRef<HTMLDivElement>(null);
   const [isMoved, setIsMoved] = useState(false);
+  
 
   const handleClick = (direction: string) => {
     setIsMoved(true);
@@ -32,7 +33,7 @@ const Row = ({ movies, title }: Props) => {
       <h2 className="w-56 cursor-pointer text-sm font-semibold text-[#e5e5e5] transition duration-200 hover:text-white md:text-2xl">
         {title}
       </h2>
-      {/* al usar un group-hover el padre debe llevar group ?? */}
+      {/* al usar un group-hover el padre debe llevar group para determinar ese group,entiendo */}
       <div className="group relative md:-ml-2">
         <ChevronLeftIcon
           className={`absolute top-0 bottom-0 left-2 z-40 m-auto h-9 w-9 cursor-pointer opacity-0 transition hover:scale-125 group-hover:opacity-100 ${

@@ -2,6 +2,10 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Banner from "../components/Banner";
 import Header from "../components/Header";
+import Row from "../components/Row";
+import useAuth from "../hooks/useAuth";
+import { Movie } from "../interfaces/typings";
+import { useRecoilValue } from "recoil";
 
 interface Props {
   netflixOriginals: Movie[]; // otra forma es [Movie]
@@ -23,11 +27,16 @@ const Home: NextPage<Props> = ({
   topRated,
   trendingNow,
 }) => {
+  const { loading } = useAuth();
+  // recuerda que useRecoilValue sólo expone el getter
+  const showModal = useRecoilValue(modalState);
+  // aqui iria un loader,por tiempo lo dejamos asi
+
   return (
     <div className="relative h-screen bg-gradient-to-b from-gray-900/10 to-[#010511] lg:h-[140vh]">
       <Head>
         <title>Home - Netflix</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/images/netflix-logo.svg" />
       </Head>
       <Header />
       <main className="relative pl-4 pb-24 lg:space-y-24 lg:pl-16">
@@ -44,7 +53,7 @@ const Home: NextPage<Props> = ({
           <Row title="Documentaries" movies={documentaries} />
         </section>
       </main>
-      {/* Modal */}
+      {showModal &&  <Modal /> }
     </div>
   );
 };
@@ -53,10 +62,11 @@ export default Home;
 
 // puedo tener más imports aqui si quiero realmente.El nombre de esta función esta reservado,logicamente,para que Next haga SSR.Fijate en el pattern recognition que hacemos de la app de Disney Clone al pedir de nuevo todo en paralelo y mediante SSR.Perfecto.
 // Recuerda que solo puedo hacer SSR en una page
+// fijate que parece que da igual donde poner los imports,si arriba o abajo,es lo primero que hará (traer todos )
 import { GetServerSideProps } from "next";
 import requests from "../utils/request";
-import { Movie } from "../interfaces/typings";
-import Row from "../components/Row";
+import { modalState } from "../atoms/modal";
+import Modal from "../components/Modal";
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const [
     netflixOriginals,

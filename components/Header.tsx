@@ -1,9 +1,10 @@
 import { SearchIcon } from "@heroicons/react/outline";
 import { BellIcon } from "@heroicons/react/solid";
-import Link from "next/link";
 import { useEffect, useState } from "react";
+import useAuth from "../hooks/useAuth";
 
 const Header = () => {
+  const { logout } = useAuth();
   const [isScrolled, setIsScrolled] = useState(false);
   // I like the naming of the function that he used
   const handleScroll = () => setIsScrolled(window.scrollY > 0);
@@ -36,9 +37,9 @@ const Header = () => {
         <SearchIcon className="h-6 w-6 hidden sm:inline "></SearchIcon>
         <p className="hidden lg:inline">Kids</p>
         <BellIcon className="h-6 w-6" />
-        <Link href="/account">
-          <img src="https://rb.gy/g1pwyx" alt="" className="cursor-pointer rounded" />
-        </Link>
+          <img 
+          onClick={logout}
+          src="https://rb.gy/g1pwyx" alt="" className="cursor-pointer rounded" />
       </div>
     </header>
   );
